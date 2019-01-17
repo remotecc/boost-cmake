@@ -1,23 +1,11 @@
 cmake_minimum_required(VERSION 3.1.0)
 project(Boost-CMake)
 
-option(BOOST_DISABLE_TESTS "Do not build test targets, even if building standalone" OFF)
-
-set(BOOST_URL "https://dl.bintray.com/boostorg/release/1.69.0/source/boost_1_69_0.tar.bz2" CACHE STRING "Boost download URL")
-set(BOOST_URL_SHA256 "8f32d4617390d1c2d16f26a27ab60d97807b35440d45891fa340fc2648b04406" CACHE STRING "Boost download URL SHA256 checksum")
-
-include(FetchContent)
-FetchContent_Declare(
-  Boost
-  URL ${BOOST_URL}
-  URL_HASH SHA256=${BOOST_URL_SHA256}
-)
-FetchContent_GetProperties(Boost)
-
-if(NOT Boost_POPULATED)
-  FetchContent_Populate(Boost)
-  set(BOOST_SOURCE ${boost_SOURCE_DIR})
+if (NOT IS_DIRECTORY "${BOOST_SOURCE}")
+  message(FATAL_ERROR "BOOST_SOURCE is not defined. It must points to existing Boost source directory.")
 endif()
+
+option(BOOST_DISABLE_TESTS "Do not build test targets, even if building standalone" OFF)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules)
 include(CheckBoostVersion)
